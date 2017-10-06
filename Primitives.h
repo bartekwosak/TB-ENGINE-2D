@@ -79,5 +79,20 @@ public:
 	void middle_triangle();
 };
 
-
+//Class Square
+class Square
+{
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int l;
+	int color;
+	bool fill;
+public:
+	Square(int x1, int y1, int length, int color);
+	void draw(BITMAP * bmp, bool fill);
+	void field();
+	void length();                                    
+};
 

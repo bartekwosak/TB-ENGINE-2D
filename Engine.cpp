@@ -1,5 +1,8 @@
+#include "Library.h"
 #include "Engine.h"
-
+#include "Colors.h"
+#include "Functions.h"
+#include "Primitives.h"
 
 TBEngine::TBEngine(int w, int h)
 {

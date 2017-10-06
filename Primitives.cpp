@@ -201,7 +201,7 @@ void Triangle::length()
 	if (key[KEY_L])
 	{
 		int result = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) + sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2)) + sqrt((x3 - x1)*(x3 - x1) + (y3 - y1)*(y3 - y1));
-		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3-10, (y1 + y2 + y2) / 3-10, makecol(255, 255, 255), -1, "L: %d", result);
+		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3 - 10, (y1 + y2 + y3) / 3 - 10, makecol(255, 255, 255), -1, "L: %d", result);
 	}
 }
 
@@ -209,12 +209,12 @@ void Triangle::field()
 {
 	if (key[KEY_P])
 	{
-		int length = (sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) + sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2)) + sqrt((x3 - x1)*(x3 - x1) + (y3 - y1)*(y3 - y1)))/2;
+		int length = (sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)) + sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2)) + sqrt((x3 - x1)*(x3 - x1) + (y3 - y1)*(y3 - y1))) / 2;
 		int ab = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
 		int bc = sqrt((x3 - x2)*(x3 - x2) + (y3 - y2)*(y3 - y2));
 		int ac = sqrt((x3 - x1)*(x3 - x1) + (y3 - y1)*(y3 - y1));
-		int result = sqrt(length*((length - ab)*(length - bc)*(length-ac)));
-		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3, (y1 + y2 + y2) / 3, makecol(255, 255, 255), -1, "P: %d", result);
+		int result = sqrt(length*((length - ab)*(length - bc)*(length - ac)));
+		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3, makecol(255, 255, 255), -1, "P: %d", result);
 	}
 }
 
@@ -233,6 +233,51 @@ void Triangle::middle_triangle()
 		int cd = sqrt((x3 - ab_d_x)*(x3 - ab_d_x) + (y3 - ab_d_y)*(y3 - ab_d_y));
 		int ae = sqrt((x1 - bc_e_x)*(x1 - bc_e_x) + (y1 - bc_e_y)*(y1 - bc_e_y));
 		int bf = sqrt((x2 - ac_f_x)*(x2 - ac_f_x) + (y2 - ac_f_y)*(y2 - ac_f_y));
-		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3, (y1 + y2 + y2) / 3, makecol(255, 255, 255), -1, "AE: %d BF: %d CD: %d", ae,bf,cd);
+		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3 - 20, (y1 + y2 + y3) / 3 - 20, makecol(255, 255, 255), -1, "AE: %d BF: %d CD: %d", ae, bf, cd);
 	}
 }
+
+//Methods - class Square:
+
+Square::Square(int x1, int y1, int l, int color)
+{
+	this->x1 = x1;
+	this->y1 = y1;
+	this->x2 = 0;
+	this->y2 = 0;
+	this->l = l;
+	this->color = color;
+}
+
+void Square::draw(BITMAP * bmp, bool fill)
+{
+	x2 = this->x1 + this->l;
+	y2 = this->y1 + this->l;
+	if (fill == false)
+	{
+		rect(bmp, x1, y1, x2, y2, color);
+	}
+	else
+	{
+		rectfill(bmp, x1, y1, x2, y2, color);
+	}
+}
+
+void Square::field()
+{
+	if (key[KEY_P])
+	{
+		int result = sqrt((x2 - x1)*(x2 - x1))*sqrt((x2 - x1)*(x2 - x1));
+		textprintf_centre_ex(screen, font, (x1 + x2) / 2, (y1 + y2) / 2, makecol(255, 255, 255), -1, "P: %d", result);
+	}
+}
+
+void Square::length()
+{
+	if (key[KEY_L])
+	{
+		int result = 4 * sqrt((x2 - x1)*(x2 - x1));
+		textprintf_centre_ex(screen, font, (x1 + x2) / 2 - 10, (y1 + y2) / 2 - 10, makecol(255, 255, 255), -1, "L: %d", result);
+	}
+}
+
