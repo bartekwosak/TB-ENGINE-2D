@@ -10,9 +10,10 @@ public:
 	int x;
 	int y;
 	int p_y;
+	int jump_height;
 	Hero(int x, int y);
 	void draw(BITMAP *buffor);
-	void move();
+	void move(int jump_height);
 };
 
 class Sky {

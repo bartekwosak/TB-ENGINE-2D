@@ -1,8 +1,8 @@
 #include "Textures.h"
 #include "Primitives.h"
-
-
 #define CAMERA_OFFSET 250
+
+// Methods - class Sky:
 
 Sky::Sky(int color)
 {
@@ -21,13 +21,14 @@ void Sky::draw(BITMAP *buffor, int x, int w) {
 		blit(this->BMP, buffor, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 }
 
-//********
+// Methods - class Stars:
 
 Stars::Stars() {
 	this->x = rand() % SCREEN_W;
 	this->y = rand() % 50;
 	this->color = makecol(100 + rand() % 150, 100 + rand() % 150, 100 + rand() % 150);
 }
+
 void Stars::draw(BITMAP *buffor, int h, int w) {
 	if (h - CAMERA_OFFSET>0 && h<w - SCREEN_W + CAMERA_OFFSET) {
 		putpixel(buffor, x + h - CAMERA_OFFSET, y, color);
@@ -49,14 +50,15 @@ void Stars::draw(BITMAP *buffor, int h, int w) {
 		putpixel(buffor, x + 1, y + 1, color);
 	}
 }
-//********
+
+// Methods - class Ground:
+
 Ground::Ground(int x, int y, int l) {
 	this->x = x;
 	this->y = y;
 	this->l = l;
 	BMP = create_bitmap(l, SCREEN_H - y);
 	clear_to_color(BMP, makecol(255, 0, 255));
-
 
 	for (int tmpx = 0; tmpx <= l; tmpx += 14)
 		for (int tmpy = 7; tmpy <= SCREEN_H - y; tmpy += 7)
@@ -86,8 +88,6 @@ Ground::Ground(int x, int y, int l) {
 	for (int tmpx = 0; tmpx <= l; tmpx += 14)
 		if (rand() % 2)
 			rectfill(BMP, tmpx, 36, tmpx + 14, 45, makecol(61 + rand() % 5, 80 + rand() % 55, 31 + rand() % 5)); // rysowanie pod trawa
-
-
 }
 
 void Ground::draw(BITMAP *buffor) {
@@ -107,7 +107,9 @@ void Ground::gravity(Hero &h) {
 			h.ground = false;
 	}
 }
-//************************
+
+// Methods - class Hero:
+
 Hero::Hero(int x, int y)
 {
 	this->x = x;
@@ -115,6 +117,7 @@ Hero::Hero(int x, int y)
 	this->ground = false;
 	this->jump = false;
 	this->p_y = SCREEN_H;
+	this->jump_height = jump_height;
 	BMP = create_bitmap(40, 32);
 	rectfill(BMP, 0, 0, 40, 32, makecol(255, 255, 255));
 }
@@ -124,7 +127,7 @@ void Hero::draw(BITMAP* buffor)
 	masked_blit(this->BMP, buffor, 0, 0, x, y, BMP->w, BMP->h);
 }
 
-void Hero::move()
+void Hero::move(int jump_height)
 {
 	if (key[KEY_A])
 		x--;
@@ -134,7 +137,7 @@ void Hero::move()
 	{
 		jump = true;
 		ground = false;
-		p_y = y - 150;
+		p_y = y - jump_height;
 		if (p_y<0)
 			p_y = 0;
 	}
@@ -157,4 +160,3 @@ void Hero::move()
 	}
 	Ground::gravity_blocks = 0;
 }
-//************************

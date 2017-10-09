@@ -67,16 +67,19 @@ void Circle::draw(BITMAP * bmp, bool fill, bool gradient, bool move)
 		{
 			this->x = mouse_x;
 			this->y = mouse_y;
-			if (mouse_needs_poll())
+			if (mouse_needs_poll()) {
 				poll_mouse();
+			}
 
 		}
 		if (mouse_z && (((this->x - mouse_x)*(this->x - mouse_x)) + ((this->y - mouse_y)*(this->y - mouse_y)) <= this->r*this->r))
 		{
-			if (mouse_z - scale > 0)
+			if (mouse_z - scale > 0) {
 				this->r += 7;
-			if (mouse_z - scale < 0)
+			}
+			if (mouse_z - scale < 0) {
 				this->r -= 7;
+			}
 			scale = mouse_z;
 		}
 	}
@@ -152,6 +155,14 @@ void Rectangle::draw(BITMAP * bmp, bool type)
 	if (type == false)
 	{
 		rect(bmp, x1, y1, x2, y2, color);
+		if (mouse_b & 1 && x1<mouse_x && y1<mouse_y && x2>mouse_x && y2>mouse_y)
+		{
+			this->x1 = mouse_x;
+			this->y1 = mouse_y;
+			if (mouse_needs_poll()) {
+				poll_mouse();
+			}
+		}
 	}
 	else
 	{
@@ -280,5 +291,6 @@ void Square::length()
 		textprintf_centre_ex(screen, font, (x1 + x2) / 2 - 10, (y1 + y2) / 2 - 10, makecol(255, 255, 255), -1, "L: %d", result);
 	}
 }
+
 
 

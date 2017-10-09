@@ -3,13 +3,9 @@
 #include "Colors.h"
 #include "Functions.h"
 #include "Textures.h"
-
-#ifndef PRIMI
-#define PRIMI
 #include "Primitives.h"
-#endif // PRIMI
-
 #define CAMERA_OFFSET 250
+
 using namespace std;
 
 int Ground::gravity_blocks = 0;
@@ -22,8 +18,8 @@ int main(void)
 	Colors * color = new Colors();
 	Line * line = new Line(200, 100, 100, 200, color->blue);
 	Circle * circle = new Circle(200, 250, 100, color->orange);
-	Circle * circle3 = new Circle(300, 470, 40, color->lime);
 	Circle * circle2 = new Circle(500, 470, 70, color->make_color(96, 68, 145));
+	Circle * circle3 = new Circle(300, 470, 40, color->lime);
 	Rectangle * rect = new Rectangle(20, 100, 300, 20, color->green);
 	Rectangle * rect2 = new Rectangle(400, 30, 600, 270, color->gray);
 	Triangle * triangle = new Triangle(300, 100, 500, 300, 300, 400, color->brown);
@@ -37,8 +33,8 @@ int main(void)
 		engine->fullscreen();
 
 		//Draw methods:
-		circle->draw(buffor, true, true, false);
-		circle2->draw(buffor, true, false, true);
+		circle->draw(buffor, true, true, true);
+		circle2->draw(buffor, true, false, false);
 		circle3->draw(buffor, true, true, true);
 		axis->draw(buffor);
 		rect->draw(buffor, true);
@@ -62,21 +58,24 @@ int main(void)
 		square->field();
 		square->length();
 
-		rest(25);
-		if (key[KEY_ESC]) {
+		if (key[KEY_1]) {
 			break;
+		}
+
+		if (key[KEY_ESC])
+		{
+			exit(1);
 		}
 	}
 
 
-	//************************************************************************************************
+	//Engine - game:
 
 
-	Sky *theme = new Sky(color->make_color(80, 245, 255));
+	Sky *theme = new Sky(color->purple);
 	Stars *stars[20];
 	for (int i = 0; i<20; i++)
 		stars[i] = new Stars();
-
 
 	Ground *g = new Ground(5, 50, 50);
 	Ground *g2 = new Ground(20, 500, 260);
@@ -122,9 +121,9 @@ int main(void)
 		g5->gravity(*hero);
 		g6->gravity(*hero);
 
-		hero->move();
+		hero->move(250);
 
-		if (key[KEY_1])
+		if (key[KEY_ESC])
 		{
 			break;
 		}
