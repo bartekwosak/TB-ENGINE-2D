@@ -1,4 +1,5 @@
 #include "Library.h"
+
 //Class - Pixel
 class Pixel
 {
@@ -93,6 +94,6 @@ public:
 	Square(int x1, int y1, int length, int color);
 	void draw(BITMAP * bmp, bool fill);
 	void field();
-	void length();                                    
+	void length();
 };
 

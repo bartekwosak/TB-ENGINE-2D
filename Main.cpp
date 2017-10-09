@@ -2,9 +2,17 @@
 #include "Engine.h"
 #include "Colors.h"
 #include "Functions.h"
-#include "Primitives.h"
+#include "Textures.h"
 
+#ifndef PRIMI
+#define PRIMI
+#include "Primitives.h"
+#endif // PRIMI
+
+#define CAMERA_OFFSET 250
 using namespace std;
+
+int Ground::gravity_blocks = 0;
 
 int main(void)
 {
@@ -56,10 +64,72 @@ int main(void)
 
 		rest(25);
 		if (key[KEY_ESC]) {
-			return 0;
+			break;
 		}
 	}
-	return 0;
 
+
+	//************************************************************************************************
+
+
+	Sky *theme = new Sky(color->make_color(80, 245, 255));
+	Stars *stars[20];
+	for (int i = 0; i<20; i++)
+		stars[i] = new Stars();
+
+
+	Ground *g = new Ground(5, 50, 50);
+	Ground *g2 = new Ground(20, 500, 260);
+	Ground *g3 = new Ground(233, 420, 230);
+	Ground *g4 = new Ground(460, 300, 120);
+	Ground *g5 = new Ground(700, 200, 506);
+	Ground *g6 = new Ground(1150,400,900);
+
+	Hero *hero = new Hero(300, 100);
+
+	BITMAP * BOARD = create_bitmap(2100, SCREEN_H);
+
+
+	while (true)
+	{
+		clear_to_color(BOARD, color->make_color(0, 0, 0));
+		engine->fullscreen();
+		theme->draw(BOARD, hero->x, BOARD->w);
+
+		for (int i = 0; i<20; i++)
+			stars[i]->draw(BOARD, hero->x, BOARD->w);
+
+		g->draw(BOARD);
+		g2->draw(BOARD);
+		g3->draw(BOARD);
+		g4->draw(BOARD);
+		g5->draw(BOARD);
+		g6->draw(BOARD);
+
+		hero->draw(BOARD);
+
+		if (hero->x >= CAMERA_OFFSET && hero->x <= BOARD->w - SCREEN_W + CAMERA_OFFSET)
+			blit(BOARD, screen, hero->x - CAMERA_OFFSET, 0, 0, 0, SCREEN_W, SCREEN_H);
+		else if (hero->x <= CAMERA_OFFSET)
+			blit(BOARD, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+		else
+			blit(BOARD, screen, BOARD->w - SCREEN_W, 0, 0, 0, SCREEN_W, SCREEN_H);
+
+		g->gravity(*hero);
+		g2->gravity(*hero);
+		g3->gravity(*hero);
+		g4->gravity(*hero);
+		g5->gravity(*hero);
+		g6->gravity(*hero);
+
+		hero->move();
+
+		if (key[KEY_1])
+		{
+			break;
+		}
+	}
+
+	return 0;
 }
 END_OF_MAIN()
