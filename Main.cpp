@@ -4,6 +4,7 @@
 #include "Functions.h"
 #include "Textures.h"
 #include "Primitives.h"
+#include "Telebim.h"
 #define CAMERA_OFFSET 250
 
 using namespace std;
@@ -16,7 +17,6 @@ int main(void)
 	TBEngine * engine = new TBEngine(800, 600);
 	static BITMAP * buffor = create_bitmap(SCREEN_W, SCREEN_H);
 	Colors * color = new Colors();
-	Line * line = new Line(200, 100, 100, 200, color->blue);
 	Circle * circle = new Circle(200, 250, 100, color->orange);
 	Circle * circle2 = new Circle(500, 470, 70, color->make_color(96, 68, 145));
 	Circle * circle3 = new Circle(300, 470, 40, color->lime);
@@ -69,25 +69,42 @@ int main(void)
 	}
 
 
-	//Engine - game:
+	// Engine - game:
 
 
 	Sky *theme = new Sky(color->purple);
-	Stars *stars[20];
-	for (int i = 0; i<20; i++)
-		stars[i] = new Stars();
+	Moon *moon = new Moon();
 
+	Stars *stars[20];
+	for (int i = 0; i < 20; i++)
+		stars[i] = new Stars();
 	Ground *g = new Ground(5, 50, 50);
-	Ground *g2 = new Ground(20, 500, 260);
+	Ground *g2 = new Ground(20, 500, 213);
 	Ground *g3 = new Ground(233, 420, 230);
 	Ground *g4 = new Ground(460, 300, 120);
-	Ground *g5 = new Ground(700, 200, 506);
-	Ground *g6 = new Ground(1150,400,900);
+	Ground *g5 = new Ground(680, 200, 506);
+	Ground *g6 = new Ground(1150, 400, 900);
+
+	Telebim *t1 = new Telebim(730, 300);
+
+	Tree *tree1 = new Tree(90, 207);
+	Tree *tree2 = new Tree(442, 7);
+	Tree *tree3 = new Tree(1000, -79);
+	Tree *tree4 = new Tree(1500, 109);
+
+	Bush *b1 = new Bush(63, 467);
+	Bush *b2 = new Bush(820, 160);
+	Bush *b3 = new Bush(1680, 360);
+
+	Water_clif *w1 = new Water_clif(14, 150);
+	Water_clif *w2 = new Water_clif(500, 400);
+	Water_clif *w3 = new Water_clif(690, 300);
+	Water_clif *w4 = new Water_clif(1300, 500);
+	Water_clif *w5 = new Water_clif(1800, 500);
 
 	Hero *hero = new Hero(300, 100);
 
 	BITMAP * BOARD = create_bitmap(2100, SCREEN_H);
-
 
 	while (true)
 	{
@@ -95,17 +112,39 @@ int main(void)
 		engine->fullscreen();
 		theme->draw(BOARD, hero->x, BOARD->w);
 
-		for (int i = 0; i<20; i++)
+		for (int i = 0; i < 20; i++)
 			stars[i]->draw(BOARD, hero->x, BOARD->w);
 
+		moon->draw(BOARD);
+
 		g->draw(BOARD);
+		w1->draw(BOARD);
+
 		g2->draw(BOARD);
 		g3->draw(BOARD);
+
 		g4->draw(BOARD);
+		w2->draw(BOARD);
+
 		g5->draw(BOARD);
+		w3->draw(BOARD);
+
 		g6->draw(BOARD);
+		w4->draw(BOARD);
+		w5->draw(BOARD);
+
+		tree1->draw(BOARD);
+		tree2->draw(BOARD);
+		tree3->draw(BOARD);
+		tree4->draw(BOARD);
+
+		b1->draw(BOARD);
+		b2->draw(BOARD);
+		b3->draw(BOARD);
 
 		hero->draw(BOARD);
+
+		t1->draw(BOARD, *hero);
 
 		if (hero->x >= CAMERA_OFFSET && hero->x <= BOARD->w - SCREEN_W + CAMERA_OFFSET)
 			blit(BOARD, screen, hero->x - CAMERA_OFFSET, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -122,13 +161,12 @@ int main(void)
 		g6->gravity(*hero);
 
 		hero->move(250);
-
+		moon->move(hero->x);
 		if (key[KEY_ESC])
 		{
 			break;
 		}
 	}
-
 	return 0;
 }
 END_OF_MAIN()

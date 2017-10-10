@@ -2,15 +2,13 @@
 #include "Library.h"
 
 class Hero {
-
-	BITMAP* BMP;
 public:
 	bool ground;
 	bool jump;
 	int x;
 	int y;
 	int p_y;
-	int jump_height;
+	BITMAP* BMP;
 	Hero(int x, int y);
 	void draw(BITMAP *buffor);
 	void move(int jump_height);
@@ -22,6 +20,16 @@ class Sky {
 public:
 	Sky(int color);
 	void draw(BITMAP *buffor, int x, int w);
+};
+
+class Moon {
+	int x;
+	int y;
+	BITMAP* BMP;
+public:
+	Moon();
+	void draw(BITMAP *buffor);
+	void move(int xx);
 };
 
 class Stars {
@@ -46,5 +54,29 @@ public:
 };
 
 
+class Tree {
+	int x;
+	int y;
+	BITMAP* BMP;
+public:
+	Tree(int x, int y);
+	void draw(BITMAP * buffor);
+};
 
+class Bush {
+	int x;
+	int y;
+	BITMAP* BMP;
+public:
+	Bush(int x, int y);
+	void draw(BITMAP * buffor);
+};
 
+class Water_clif {
+	int x;
+	int y;
+	int delta;
+public:
+	Water_clif(int x, int y);
+	void draw(BITMAP* buffor);
+};

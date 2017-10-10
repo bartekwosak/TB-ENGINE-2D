@@ -44,6 +44,7 @@ public:
 	void draw(BITMAP * bmp, bool fill, bool gradient, bool move);
 	void field();
 	void length();
+	void moves(int xx);
 	static int active;
 };
 

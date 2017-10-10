@@ -121,7 +121,9 @@ void Circle::draw(BITMAP * bmp, bool fill, bool gradient, bool move)
 	}
 }
 
-
+void Circle::moves(int xx) {
+	this->x -= xx;
+}
 void Circle::field()
 {
 	if (key[KEY_P])
