@@ -17,6 +17,7 @@ TBEngine::TBEngine(int w, int h)
 	enable_hardware_cursor();
 	select_mouse_cursor(MOUSE_CURSOR_ARROW);
 	show_mouse(screen);
+	install_timer();
 }
 
 void TBEngine::fullscreen()

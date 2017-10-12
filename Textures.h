@@ -8,10 +8,15 @@ public:
 	int x;
 	int y;
 	int p_y;
+	float acceleration;
+	bool lewo;
+	bool prawo;
+	bool anim;
+	int klatka;
 	BITMAP* BMP;
 	Hero(int x, int y);
-	void draw(BITMAP *buffor);
-	void move(int jump_height);
+	void draw(BITMAP *buffor, int timer);
+	void move(int jump_height,int timer);
 };
 
 class Sky {
@@ -22,14 +27,14 @@ public:
 	void draw(BITMAP *buffor, int x, int w);
 };
 
-class Moon {
-	int x;
-	int y;
-	BITMAP* BMP;
+class Moon{
+    int x;
+    int y;
+    BITMAP* BMP;
 public:
-	Moon();
-	void draw(BITMAP *buffor);
-	void move(int xx);
+    Moon();
+    void draw(BITMAP *buffor);
+    void move(int xx,int timer,bool anim);
 };
 
 class Stars {
@@ -53,30 +58,46 @@ public:
 	void draw(BITMAP *buffor);
 };
 
-
-class Tree {
-	int x;
-	int y;
-	BITMAP* BMP;
+class Telebim{
+    int x;
+    int y;
 public:
-	Tree(int x, int y);
-	void draw(BITMAP * buffor);
+    Telebim(int x,int y);
+    void draw(BITMAP * buffor,Hero h,int timer);
 };
 
-class Bush {
-	int x;
-	int y;
-	BITMAP* BMP;
+class Tree{
+    int x;
+    int y;
+    BITMAP* BMP;
 public:
-	Bush(int x, int y);
-	void draw(BITMAP * buffor);
+    Tree(int x,int y);
+    void draw(BITMAP * buffor);
 };
 
-class Water_clif {
-	int x;
-	int y;
-	int delta;
+class Bush{
+    int x;
+    int y;
+    BITMAP* BMP;
 public:
-	Water_clif(int x, int y);
-	void draw(BITMAP* buffor);
+    Bush(int x,int y);
+    void draw(BITMAP * buffor);
+};
+
+class Water_clif{
+    int x;
+    int y;
+    int delta;
+public:
+    Water_clif(int x,int y);
+    void draw(BITMAP* buffor);
+};
+
+class Portal{
+    int x;
+    int y;
+    BITMAP* BMP;
+public:
+    Portal(int x,int y);
+    void draw(BITMAP* buffor);
 };
