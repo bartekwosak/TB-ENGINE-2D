@@ -16,10 +16,9 @@ Podstawowe możliwości:
 - adaptacja gradientu dla kuli
 - adaptacja silnika grawitacji
 - adaptacja postaci bohatera
-- adaptacja bloczków jako podstawy
--
--
--
--
--
--
+- adaptacja bloczków jako podstawy gry
+- adaptacja telebimu
+- adaptacja obiektów scenerii
+- adaptacja możliwości ruchu postacią
+- cdn.
+
