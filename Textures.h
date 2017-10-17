@@ -2,6 +2,8 @@
 #include "Library.h"
 
 class Hero {
+
+
 public:
 	bool ground;
 	bool jump;
@@ -19,10 +21,29 @@ public:
 	void move(int jump_height,int timer);
 };
 
+class Enemy {
+    bool init;
+    bool all;
+    bool direction;
+public:
+    int x;
+    int y;
+    int ymax;
+    int xmin;
+    int xmax;
+    BITMAP *BMP;
+    Enemy(int x,int y, int xmin, int xmax);
+    void ini(int x);
+    void draw(BITMAP * buffor);
+    void move();
+    void swap_bmp();
+};
+
 class Sky {
 	int color;
-	BITMAP *BMP;
+
 public:
+    BITMAP *BMP;
 	Sky(int color);
 	void draw(BITMAP *buffor, int x, int w);
 };
@@ -50,8 +71,9 @@ class Ground {
 	int x;
 	int y;
 	int l;
-	BITMAP *BMP;
+    BITMAP *BMP;
 public:
+
 	static int gravity_blocks;
 	Ground(int x, int y, int l);
 	void gravity(Hero &h);
@@ -93,11 +115,5 @@ public:
     void draw(BITMAP* buffor);
 };
 
-class Portal{
-    int x;
-    int y;
-    BITMAP* BMP;
-public:
-    Portal(int x,int y);
-    void draw(BITMAP* buffor);
-};
+
+

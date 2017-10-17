@@ -1,7 +1,10 @@
 #include "Textures.h"
 #include "Primitives.h"
+#include <iostream>
 #define CAMERA_OFFSET 250
 
+using namespace std;
+// Methods - class Sky:
 // Methods - class Hero:
 
 Hero::Hero(int x, int y)
@@ -122,15 +125,79 @@ void Hero::move(int jump_height,int timer)
     }
 	if (key[KEY_R])
 	{
-		x = 1500;
+		x = 10;
 		y = -50;
 		acceleration = 1;
 	}
 	Ground::gravity_blocks = 0;
 }
+//************************
+Enemy::Enemy(int x, int y,int xmin, int xmax)
+{
+    this->x = x;
+    this->y = y;
+    this->ymax = y-81;
+    this->xmin = xmin;
+    this->xmax = xmax;
+    BMP = load_bitmap("BMP/enemy.bmp",NULL);
+    init = false;
+    all = false;
+    this->direction = true;
+}
 
-// Methods - class Sky:
+void Enemy::draw(BITMAP *buffor){
+    if(init)
+        masked_blit(this->BMP, buffor, 0, 0, x, y, BMP->w, BMP->h);
+}
+void Enemy::ini(int x)
+{
+    if(x>this->x-250)
+        init = true;
+}
+void Enemy::move()
+{
+    if(init && !all){
+        y--;
+        if(y <= ymax)
+            all = true;
+    }
+    else if(all)
+    {
+        if(!direction)
+        {
+            x--;
+            if(xmin>x){
+                    swap_bmp();
+                direction = true;
+            }
+        }
+        else if(direction)
+        {
+            x++;
+            if(xmax<x){
+                    swap_bmp();
+                direction = false;
+            }
+        }
+    }
+}
 
+void Enemy::swap_bmp(){
+    BITMAP *tmp = create_bitmap(this->BMP->w,this->BMP->h);
+    clear_to_color(tmp, makecol(255,0,255));
+    for(int i=0; i<=this->BMP->w-1;i++)
+    {
+        for(int j=0; j<=this->BMP->h-1;j++)
+        {
+            putpixel(tmp,this->BMP->w-i,j, getpixel(BMP,i,j));
+        }
+    }
+    //blit(tmp,this->BMP,0,0,0,0,this->BMP->w,-this->BMP->h);
+    this->BMP = tmp;
+}
+//************************
+//************************
+//************************
 Sky::Sky(int color)
 {
 	this->color = color;
@@ -147,9 +214,7 @@ void Sky::draw(BITMAP *buffor, int x, int w) {
 	else
 		blit(this->BMP, buffor, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 }
-
-// Methods - class Moon:
-
+//**********************
 Moon::Moon(){
     this->x = 2000;
     this->y = -40;
@@ -177,7 +242,6 @@ void Moon::move(int xx,int timer,bool anim){
          delete s;
     }
 }
-
 // Methods - class Stars:
 
 Stars::Stars() {
@@ -267,9 +331,36 @@ void Ground::gravity(Hero &h) {
 			h.ground = false;
 	}
 }
+//*****************
+Telebim::Telebim(int x,int y)
+{
+   this->x = x;
+   this->y = y;
+}
 
-// Methods - class Tree:
+void Telebim::draw(BITMAP *buffor,Hero h,int timer){
+    rectfill(buffor, this->x-5, this->y-3, this->x+410, this->y+206, makecol(20, 20, 20));
 
+    if(h.x<this->x-200||h.x>this->x+400)
+    {
+    for(int i=this->x; i<this->x +400;i+=14)
+        for(int j=this->y; j<this->y +200;j+=7)
+        {
+                int r = rand()%20;
+                rectfill(buffor, i, j, i + 14, j + 7, makecol(70 + r, 70 + r, 70 + r));
+            }
+        }
+    else{
+        int tmpy = h.y-100;
+        if(h.y-100<0)
+            tmpy = 0;
+        if(h.y+100>SCREEN_H)
+            tmpy = SCREEN_H-200;
+        stretch_blit(buffor,buffor,h.x-200,tmpy,400,200,this->x,this->y,400,200);
+        h.draw(buffor,timer);
+    }
+}
+//****************
 Tree::Tree(int x, int y)
 {
     this->x = x;
@@ -307,9 +398,7 @@ Tree::Tree(int x, int y)
 void Tree::draw(BITMAP* buffor){
     masked_blit(this->BMP, buffor, 0, 0, this->x, this->y, BMP->w, BMP->h);
 }
-
-// Methods - class Bush:
-
+//**************************
 Bush::Bush(int x, int y)
 {
     this->x = x;
@@ -333,9 +422,7 @@ Bush::Bush(int x, int y)
 void Bush::draw(BITMAP* buffor){
     masked_blit(this->BMP, buffor, 0, 0, this->x, this->y, BMP->w, BMP->h);
 }
-
-// Methods - class Water_clif
-
+//**************
 Water_clif::Water_clif(int x,int y){
     this->x = x;
     this->y = y;
@@ -349,34 +436,4 @@ void Water_clif::draw(BITMAP* buffor){
         rectfill(buffor, tmpx, this->y, tmpx+2, this->y+this->delta, makecol(70 + r, 80 + r, 100 + r));
     }
 }
-
-// Methods - class Water_clif
-
-Telebim::Telebim(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-}
-
-void Telebim::draw(BITMAP *buffor, Hero h, int timer) {
-	rectfill(buffor, this->x - 5, this->y - 3, this->x + 410, this->y + 206, makecol(20, 20, 20));
-
-	if (h.x<this->x - 200 || h.x>this->x + 400)
-	{
-		for (int i = this->x; i<this->x + 400; i += 14)
-			for (int j = this->y; j<this->y + 200; j += 7)
-			{
-				int r = rand() % 20;
-				rectfill(buffor, i, j, i + 14, j + 7, makecol(70 + r, 70 + r, 70 + r));
-			}
-	}
-	else {
-		int tmpy = h.y - 100;
-		if (h.y - 100<0)
-			tmpy = 0;
-		if (h.y + 100>SCREEN_H)
-			tmpy = SCREEN_H - 200;
-		stretch_blit(buffor, buffor, h.x - 200, tmpy, 400, 200, this->x, this->y, 400, 200);
-		h.draw(buffor, timer);
-	}
-}
+//************
