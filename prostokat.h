@@ -1,4 +1,5 @@
-#include <allegro.h>
+#include "Library.h"
+
 class Prostokat
 {
     int x;

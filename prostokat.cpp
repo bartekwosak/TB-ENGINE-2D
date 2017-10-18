@@ -1,5 +1,4 @@
 #include "prostokat.h"
-#include <allegro.h>
 
 Prostokat::Prostokat(int x,int y,int w,int h)
 {

@@ -1,200 +1,11 @@
 #include "Textures.h"
 #include "Primitives.h"
-#include <iostream>
+
 #define CAMERA_OFFSET 250
 
 using namespace std;
 // Methods - class Sky:
-// Methods - class Hero:
 
-Hero::Hero(int x, int y)
-{
-	this->x = x;
-	this->y = y;
-	this->ground = true;
-	this->jump = false;
-	this->p_y = SCREEN_H;
-	this->lewo = false;
-	this->prawo = true;
-	this->anim = false;
-	this->acceleration = 1;
-	BMP =  load_bitmap("BMP/hero.bmp",NULL);
-}
-
-void Hero::draw(BITMAP* buffor,int timer)
-{
-    if(!ground&&!anim)
-    {
-        if(p_y<y&&prawo)
-            masked_blit(this->BMP, buffor, 50, 0, x, y, BMP->w/3, BMP->h/5);
-        else if(p_y>y&&prawo)
-           masked_blit(this->BMP, buffor, 100, 0, x, y, BMP->w/3, BMP->h/5);
-        else if(p_y<y&&lewo)
-           masked_blit(this->BMP, buffor, 50, 240, x, y, BMP->w/3, BMP->h/5);
-        else
-            masked_blit(this->BMP, buffor, 100, 240, x, y, BMP->w/3, BMP->h/5);
-    }
-	else if(!anim){
-        if(prawo)
-            masked_blit(this->BMP, buffor,klatka, 80, x, y, BMP->w/3, BMP->h/5);
-        else if(lewo)
-            masked_blit(this->BMP, buffor, klatka, 160, x, y, BMP->w/3, BMP->h/5);
-        else
-            masked_blit(this->BMP, buffor, 0, 0, x, y, BMP->w/3, BMP->h/5);
-	}
-	else
-    {
-        masked_blit(this->BMP, buffor, klatka, 320, x, y, BMP->w/3, BMP->h/5);
-    }
-    if(key[KEY_E])
-    {
-        //textprintf_centre_ex(screen, font, 500, 500, makecol(255, 255, 255), -1, "%d", mx);
-        //textprintf_centre_ex(screen, font, 500, 500, makecol(255, 255, 255), -1, "%d", hero->x);
-           // putpixel(buffor,((x+40)+i*(x-mx)),(y+40)+i*(y-my),makecol(255,0,0));
-            if (x >= CAMERA_OFFSET && x <= 2100 - SCREEN_W + CAMERA_OFFSET)
-                line(buffor,x+40,y+40,mouse_x+x-CAMERA_OFFSET,mouse_y,makecol(255,35,0));
-            else if (x <= CAMERA_OFFSET)                                              //LEWA STRONA PLANSZY
-                line(buffor,x+40,y+40,mouse_x,mouse_y,makecol(255,35,0));
-            else
-            {
-                for(int i=0;i<20;i++)
-                    line(buffor,x+40,y+40,mouse_x+x+(i*5)-CAMERA_OFFSET,mouse_y,makecol(255,35,0));
-            }
-            poll_mouse();
-    }
-}
-
-void Hero::move(int jump_height,int timer)
-{
-//    if(!key[KEY_A]&&!key[KEY_D]&&!jump)
-//    {
-//        lewo = false;
-//        prawo = false;
-//    }
-	if (key[KEY_A]){
-		x--;
-        lewo = true;
-        prawo = false;
-        klatka = timer*50;
-		}
-	if (key[KEY_D]){
-		x++;
-        prawo = true;
-        lewo = false;
-        klatka = timer*50;
-	}
-	if (key[KEY_W] && !jump && ground)
-	{
-	    acceleration = 1;
-		jump = true;
-		ground = false;
-		p_y = y - jump_height;
-		if (p_y<0)
-			p_y = 0;
-	}
-	if(key[KEY_S]){
-        ground = false;
-	}
-
-	if(key[KEY_Q])
-    {
-        anim = true;
-        klatka = timer*50;
-    }
-    if(anim&&!key[KEY_Q])
-    {
-        if(timer>1)
-            anim = false;
-    }
-	if (jump)
-	{
-	    if(acceleration<3)
-            acceleration+=0.01;
-		if (y >= p_y)
-			y-=acceleration;
-		else
-		{
-			jump = false;
-			p_y = SCREEN_H;
-		}
-	}
-	if (!ground && !jump)
-    {
-		y+=acceleration;
-		acceleration+=0.01;
-    }
-	if (key[KEY_R])
-	{
-		x = 10;
-		y = -50;
-		acceleration = 1;
-	}
-	Ground::gravity_blocks = 0;
-}
-//************************
-Enemy::Enemy(int x, int y,int xmin, int xmax)
-{
-    this->x = x;
-    this->y = y;
-    this->ymax = y-81;
-    this->xmin = xmin;
-    this->xmax = xmax;
-    BMP = load_bitmap("BMP/enemy.bmp",NULL);
-    init = false;
-    all = false;
-    this->direction = true;
-}
-
-void Enemy::draw(BITMAP *buffor){
-    if(init)
-        masked_blit(this->BMP, buffor, 0, 0, x, y, BMP->w, BMP->h);
-}
-void Enemy::ini(int x)
-{
-    if(x>this->x-250)
-        init = true;
-}
-void Enemy::move()
-{
-    if(init && !all){
-        y--;
-        if(y <= ymax)
-            all = true;
-    }
-    else if(all)
-    {
-        if(!direction)
-        {
-            x--;
-            if(xmin>x){
-                    swap_bmp();
-                direction = true;
-            }
-        }
-        else if(direction)
-        {
-            x++;
-            if(xmax<x){
-                    swap_bmp();
-                direction = false;
-            }
-        }
-    }
-}
-
-void Enemy::swap_bmp(){
-    BITMAP *tmp = create_bitmap(this->BMP->w,this->BMP->h);
-    clear_to_color(tmp, makecol(255,0,255));
-    for(int i=0; i<=this->BMP->w-1;i++)
-    {
-        for(int j=0; j<=this->BMP->h-1;j++)
-        {
-            putpixel(tmp,this->BMP->w-i,j, getpixel(BMP,i,j));
-        }
-    }
-    //blit(tmp,this->BMP,0,0,0,0,this->BMP->w,-this->BMP->h);
-    this->BMP = tmp;
-}
 //************************
 //************************
 //************************
@@ -216,7 +27,7 @@ void Sky::draw(BITMAP *buffor, int x, int w) {
 }
 //**********************
 Moon::Moon(){
-    this->x = 2000;
+    this->x = 4400;
     this->y = -40;
     BMP = create_bitmap(200,200);
     clear_to_color(BMP,makecol(255,0,255));
@@ -231,7 +42,7 @@ void Moon::draw(BITMAP * buffor){
 }
 
 void Moon::move(int xx,int timer,bool anim){
-    this->x=1600-xx;
+    this->x=4400-xx;
     //textprintf_centre_ex(screen, font, 500, 500, makecol(255, 255, 255), -1, "%d",  timer);
     if(xx>x-100 &&   xx<x+100   && anim)
     {
@@ -274,10 +85,13 @@ void Stars::draw(BITMAP *buffor, int h, int w) {
 
 // Methods - class Ground:
 
-Ground::Ground(int x, int y, int l) {
+Ground::Ground(int x, int y, int l,bool moving) {
 	this->x = x;
 	this->y = y;
 	this->l = l;
+	this->yp = y;
+    this->moving = moving;
+    this->resume = true;
 	BMP = create_bitmap(l, SCREEN_H - y);
 	clear_to_color(BMP, makecol(255, 0, 255));
 
@@ -297,21 +111,26 @@ Ground::Ground(int x, int y, int l) {
 
 	for (int tmpy = 30; tmpy <SCREEN_H - y; tmpy++)
 		rectfill(BMP, l - 2, tmpy, l - 1, tmpy + 1, makecol(41, 23, 21)); // rysowanie linii grubszej po stronie prawej
+    int yellow;
+    if(moving)
+        yellow = 80;
+    else
+        yellow = 0;
 
 	for (int tmpx = 0; tmpx <= l; tmpx += 14)
 		for (int tmpy = 7; tmpy <= 30; tmpy += 7){
             if (rand() % 20==0)
                 rectfill(BMP, tmpx, tmpy, tmpx + 14, tmpy + 7, makecol(200 + rand() % 55, 200 + rand() % 55, 31 + rand() % 5));
             else
-                rectfill(BMP, tmpx, tmpy, tmpx + 14, tmpy + 7, makecol(61 + rand() % 5, 113 + rand() % 55, 31 + rand() % 5)); // rysowanie trawy
+                rectfill(BMP, tmpx, tmpy, tmpx + 14, tmpy + 7, makecol(61+yellow + rand() % 5, 113 +yellow + rand() % 55, 31 + rand() % 5)); // rysowanie trawy
         }
 	for (int tmpx = 0; tmpx <= l; tmpx += 14)
 		if (rand() % 2)
-			rectfill(BMP, tmpx, 0, tmpx + 14, 7, makecol(61 + rand() % 5, 80 + rand() % 55, 31 + rand() % 5)); // rysowanie nad traw¹
+			rectfill(BMP, tmpx, 0, tmpx + 14, 7, makecol(61+yellow + rand() % 5, 80+yellow + rand() % 55, 31 + rand() % 5)); // rysowanie nad traw¹
 
 	for (int tmpx = 0; tmpx <= l; tmpx += 14)
 		if (rand() % 2)
-			rectfill(BMP, tmpx, 36, tmpx + 14, 45, makecol(61 + rand() % 5, 80 + rand() % 55, 31 + rand() % 5)); // rysowanie pod trawa
+			rectfill(BMP, tmpx, 36, tmpx + 14, 45, makecol(61+yellow + rand() % 5, 80+yellow + rand() % 55, 31 + rand() % 5)); // rysowanie pod trawa
 }
 
 void Ground::draw(BITMAP *buffor) {
@@ -330,6 +149,25 @@ void Ground::gravity(Hero &h) {
 		else
 			h.ground = false;
 	}
+}
+
+void Ground::move(Hero h)
+{
+    if (this->moving)
+    {
+        if ((h.x+h.BMP->w/3>x    &&  h.x<x + l  &&     h.y+(h.BMP->h/5)-20>y    && h.y+h.BMP->h/5<y + 30) || !resume)
+        {
+			y++;
+			resume = false;
+        }
+        else if(this->yp<y)
+        {
+            y--;
+        }
+        if(y>SCREEN_H+100)
+            resume = true;
+    }
+
 }
 //*****************
 Telebim::Telebim(int x,int y)

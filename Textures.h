@@ -1,43 +1,6 @@
 #pragma once
 #include "Library.h"
-
-class Hero {
-
-
-public:
-	bool ground;
-	bool jump;
-	int x;
-	int y;
-	int p_y;
-	float acceleration;
-	bool lewo;
-	bool prawo;
-	bool anim;
-	int klatka;
-	BITMAP* BMP;
-	Hero(int x, int y);
-	void draw(BITMAP *buffor, int timer);
-	void move(int jump_height,int timer);
-};
-
-class Enemy {
-    bool init;
-    bool all;
-    bool direction;
-public:
-    int x;
-    int y;
-    int ymax;
-    int xmin;
-    int xmax;
-    BITMAP *BMP;
-    Enemy(int x,int y, int xmin, int xmax);
-    void ini(int x);
-    void draw(BITMAP * buffor);
-    void move();
-    void swap_bmp();
-};
+#include "Characters.h"
 
 class Sky {
 	int color;
@@ -71,13 +34,17 @@ class Ground {
 	int x;
 	int y;
 	int l;
+	int yp;
+	bool moving;
+    bool resume;
     BITMAP *BMP;
 public:
 
 	static int gravity_blocks;
-	Ground(int x, int y, int l);
+	Ground(int x, int y, int l,bool moving);
 	void gravity(Hero &h);
 	void draw(BITMAP *buffor);
+	void move(Hero h);
 };
 
 class Telebim{
@@ -114,6 +81,4 @@ public:
     Water_clif(int x,int y);
     void draw(BITMAP* buffor);
 };
-
-
 
