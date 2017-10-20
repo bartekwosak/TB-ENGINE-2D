@@ -42,6 +42,7 @@ public:
 
 	static int gravity_blocks;
 	Ground(int x, int y, int l,bool moving);
+	Ground(int x, int y, int l,bool moving,bool ice);
 	void gravity(Hero &h);
 	void draw(BITMAP *buffor);
 	void move(Hero h);
@@ -61,6 +62,7 @@ class Tree{
     BITMAP* BMP;
 public:
     Tree(int x,int y);
+    Tree(int x,int y,bool ice);
     void draw(BITMAP * buffor);
 };
 
@@ -70,6 +72,7 @@ class Bush{
     BITMAP* BMP;
 public:
     Bush(int x,int y);
+    Bush(int x,int y,bool ice);
     void draw(BITMAP * buffor);
 };
 
@@ -77,8 +80,26 @@ class Water_clif{
     int x;
     int y;
     int delta;
+    bool ice;
 public:
     Water_clif(int x,int y);
+    Water_clif(int x,int y,bool ice);
     void draw(BITMAP* buffor);
 };
 
+class Block
+{
+    int x;
+    int y;
+    int l;
+    int ymax;
+    int ymin;
+    bool direction;
+    bool dir;
+    BITMAP *BMP;
+public:
+    Block(int x,int y,int l,int ymin, int ymax,bool dir);
+    void draw(BITMAP *buffor);
+    void move(Hero &h);
+    void gravity(Hero &h);
+};

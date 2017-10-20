@@ -28,12 +28,11 @@ public:
 	bool anim;
 	int klatka;
 	BITMAP* BMP;
-	Hero(int x, int y);
+	Hero(int x, int y, BITMAP *outfit_maska,BITMAP *outfit_wlosy);
 	void draw(BITMAP *buffor, int timer);
 	void move(int jump_height,int timer,bool &end);
 	void attack(std::vector<Bullet> &bullets,volatile int &rest);
 };
-
 
 class Enemy {
 
@@ -47,10 +46,12 @@ public:
     int ymax;
     int xmin;
     int xmax;
+    int hp;
     bool dest;
     bool init;
     BITMAP *BMP;
     Enemy(int x,int y, int xmin, int xmax);
+    Enemy(int x,int y, int xmin, int xmax,bool ice);
     void ini(int x);
     void draw(BITMAP * buffor);
     int movedead();
@@ -60,7 +61,7 @@ public:
     void swap_bmp();
 };
 
-class Boss{
+class Boss_green{
     public:
     int x;
     int y;
@@ -71,8 +72,60 @@ class Boss{
     bool init;
     BITMAP *BMP;
 
-    Boss(int x,int y);
+    Boss_green(int x,int y);
     void draw(BITMAP* buffor);
     void move();
     void attack(std::vector<Enemy> &enemies);
+};
+//***********************************************
+//***********************************************
+//***********************************************
+//***********************************************
+//***********************************************
+//***********************************************
+
+class Ice_Ball
+{
+    int x;
+    int y;
+    int r;
+    int xmin;
+    int xmax;
+    int ymax;
+public:
+    Ice_Ball(int x,int y,int r,int xmin,int xmax);
+    void draw(BITMAP* buffor);
+    void move();
+    int check_hero(Hero &h);
+};
+
+class Button
+{
+    int x;
+    int y;
+public:
+    bool state;
+    Button(int x,int y);
+    void draw(BITMAP* buffor);
+    void active(Hero &h,std::vector<Enemy> &enemies);
+};
+
+class Boss_ice
+{
+    public:
+    int x;
+    int y;
+    int px;
+    int py;
+    int hp;
+    int state;
+    bool init;
+    BITMAP* BMP;
+
+    Boss_ice(int x,int y);
+    int check_hero(Hero& h);
+    void draw(BITMAP* buffor);
+    void move(int speed);
+    void attack(std::vector <Enemy> &enemies,Hero &h);
+    void add_red();
 };
