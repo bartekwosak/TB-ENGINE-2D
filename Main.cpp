@@ -5,7 +5,6 @@
 #include "Textures.h"
 #include "Primitives.h"
 #include "Characters.h"
-#include "Rectangle.h"
 
 #define CAMERA_OFFSET 250
 

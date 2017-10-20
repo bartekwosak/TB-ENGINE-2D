@@ -1,4 +1,5 @@
 #include "Library.h"
+#pragma once
 
 class Rectangle
 {
