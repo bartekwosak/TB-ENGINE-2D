@@ -1,7 +1,5 @@
 #include "Primitives.h"
 
-
-// Methods - class Pixel:
 Pixel::Pixel(int x, int y, int color)
 {
 	this->x = x;
@@ -14,7 +12,6 @@ void Pixel::draw(BITMAP * bmp)
 	putpixel(bmp, x, y, color);
 }
 
-// Methods - class Line:
 Line::Line(int x1, int y1, int x2, int y2, int color)
 {
 	this->x1 = x1;
@@ -46,7 +43,6 @@ void Line::length()
 	}
 }
 
-//Methods - class Circle:
 Circle::Circle(int x, int y, int r, int color)
 {
 	this->x = x;
@@ -121,8 +117,8 @@ void Circle::draw(BITMAP * bmp, bool fill, bool gradient, bool move)
 	}
 }
 
-void Circle::moves(int xx){
-    this->x -=xx;
+void Circle::moves(int xx) {
+	this->x -= xx;
 }
 void Circle::field()
 {
@@ -142,7 +138,6 @@ void Circle::length()
 	}
 }
 
-//Methods - class Rectangle:
 Rectangle::Rectangle(int x1, int y1, int x2, int y2, int color)
 {
 	this->x1 = x1;
@@ -191,7 +186,6 @@ void Rectangle::length()
 	}
 }
 
-//Methods - class Triangle:
 Triangle::Triangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
 {
 	this->x1 = x1;
@@ -249,8 +243,6 @@ void Triangle::middle_triangle()
 		textprintf_centre_ex(screen, font, (x1 + x2 + x3) / 3 - 20, (y1 + y2 + y3) / 3 - 20, makecol(255, 255, 255), -1, "AE: %d BF: %d CD: %d", ae, bf, cd);
 	}
 }
-
-//Methods - class Square:
 
 Square::Square(int x1, int y1, int l, int color)
 {

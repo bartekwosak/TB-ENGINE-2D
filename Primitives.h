@@ -1,6 +1,5 @@
 #include "Library.h"
 
-//Class - Pixel
 class Pixel
 {
 	int x;
@@ -11,7 +10,6 @@ public:
 	void draw(BITMAP * bmp);
 };
 
-//Class - Line:
 class Line
 {
 	int x1;
@@ -28,7 +26,6 @@ public:
 	void length();
 };
 
-//Class Circle
 class Circle
 {
 	int x;
@@ -48,7 +45,6 @@ public:
 	static int active;
 };
 
-//Class Rectangle
 class Rectangle
 {
 	int x1;
@@ -63,7 +59,6 @@ public:
 	void length();
 };
 
-//Class Rectangle
 class Triangle
 {
 	int x1;
@@ -81,7 +76,6 @@ public:
 	void middle_triangle();
 };
 
-//Class Square
 class Square
 {
 	int x1;
